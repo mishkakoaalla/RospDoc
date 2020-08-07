@@ -142,31 +142,27 @@ namespace RospDoc
                     ksDocument2D docD = (ksDocument2D)kompas.ActiveDocument2D();
                     ksStamp stamp = (ksStamp)docD.GetStamp();
 
+                    
+
+
                     stamp.ksOpenStamp();
                     stamp.ksColumnNumber(110);
-                    ksTextLineParam itemLineText = (ksTextLineParam)kompas.GetParamStruct((short)StructType2DEnum.ko_TextLineParam);
-                    
-                    itemLineText.Init();
+                    ksTextItemParam itemParam = (ksTextItemParam)kompas.GetParamStruct((short)StructType2DEnum.ko_TextItemParam);
+                    if (itemParam != null)
+                    {
+                        itemParam.Init();
 
-                    itemLineText.style = 32768;
-                    ksDynamicArray arrpLineText = (ksDynamicArray)kompas.GetDynamicArray(ldefin2d.TEXT_LINE_ARR);
-                    item = (ksTextItemParam)kompas.GetParamStruct((short)StructType2DEnum.ko_TextItemParam);
-                    item.Init();
-                    item.s = "УУУУУУУХ";
-
-                    ksTextItemFont itemFont = (ksTextItemFont)kompas.GetParamStruct((short)StructType2DEnum.ko_TextItemFont);
-                    itemFont.Init();
-                    itemFont.fontName = "GOST type A";
-
-
-                    Console.WriteLine("Получение данных из документа № - " + Convert.ToInt32(i + 1));
-
+                        ksTextItemFont itemFont = (ksTextItemFont)itemParam.GetItemFont();
+                        if (itemFont != null)
+                        {
+                            itemFont.SetBitVectorValue(ldefin2d.NEW_LINE, true);
+                            itemParam.s = "1111111";
+                            docD.ksTextLine(itemParam);
+                        }
+                    }
 
                     stamp.ksCloseStamp();
 
-
-
-                    
 
 
                     //doc.Close(0); //Закрыть документ
@@ -176,24 +172,47 @@ namespace RospDoc
                 {
                     if (w == ".spw")
                     {
-                        Console.WriteLine("Пропущена спецификация");
+                        IKompasDocument doc = appl.Documents.Open(path[i], true, false);// Получаем интерфейс активного документа 2D в API7
 
-                        IKompasDocument docS = appl.Documents.Open(path[i], true, false);// Получаем интерфейс активного документа 2D в API7     
-
-
-                        LayoutSheets _ls = docS.LayoutSheets;                     
-                        LayoutSheet LS = _ls.ItemByNumber[1];
-
-                        var q = _ls.ItemByNumber[1].Stamp;
-
-                        IStamp isamp = LS.Stamp;
+                        ksDocument2D docD = (ksDocument2D)kompas.ActiveDocument2D();
 
 
-                        IText qq = isamp.Text[111];
-                        IText ww = isamp.Text[121];
-                        Console.WriteLine("ШТАМП Проверил -------------  " + qq.Str);
-                        Console.WriteLine("ШТАМП Роспись -------------  " + ww.Str);
+                        object stamp = null;
+                        ksSpcDocument spcDoc = null;
+                        spcDoc = (ksSpcDocument)docD;
+
+                        stamp = spcDoc.GetStamp();
                         
+
+
+                        ksDocument2D docS = (ksDocument2D)kompas.SpcActiveDocument();
+                        ksSpecification SS = (ksSpecification)kompas.SpcDocument();
+
+
+                        //ksSpcDocument docS = (ksSpcDocument)kompas.SpcActiveDocument();
+                        //ksStamp stamp = (ksStamp)SS.GetStamp();
+
+
+
+
+                        stamp.ksOpenStamp();
+                        stamp.ksColumnNumber(110);
+                        ksTextItemParam itemParam = (ksTextItemParam)kompas.GetParamStruct((short)StructType2DEnum.ko_TextItemParam);
+                        if (itemParam != null)
+                        {
+                            itemParam.Init();
+
+                            ksTextItemFont itemFont = (ksTextItemFont)itemParam.GetItemFont();
+                            if (itemFont != null)
+                            {
+                                itemFont.SetBitVectorValue(ldefin2d.NEW_LINE, true);
+                                itemParam.s = "1111111";
+                                docD.ksTextLine(itemParam);
+                                
+                            }
+                        }
+
+                        stamp.ksCloseStamp();
 
 
                     }
