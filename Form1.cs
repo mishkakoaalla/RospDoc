@@ -123,6 +123,9 @@ namespace RospDoc
         void START()
         {
             Console.WriteLine("Количество документов = " + path.Count);
+            ksTextItemParam item = null;
+
+
             for (int i = 0; i < path.Count; i++)
             {
                
@@ -135,24 +138,38 @@ namespace RospDoc
                 {
 
                     IKompasDocument doc = appl.Documents.Open(path[i], true, false);// Получаем интерфейс активного документа 2D в API7
-                    Console.WriteLine("Получение данных из документа № - " + Convert.ToInt32(i + 1));
+
                     ksDocument2D docD = (ksDocument2D)kompas.ActiveDocument2D();
                     ksStamp stamp = (ksStamp)docD.GetStamp();
 
+                    stamp.ksOpenStamp();
+                    stamp.ksColumnNumber(110);
+                    ksTextLineParam itemLineText = (ksTextLineParam)kompas.GetParamStruct((short)StructType2DEnum.ko_TextLineParam);
+                    
+                    itemLineText.Init();
+
+                    itemLineText.style = 32768;
+                    ksDynamicArray arrpLineText = (ksDynamicArray)kompas.GetDynamicArray(ldefin2d.TEXT_LINE_ARR);
+                    item = (ksTextItemParam)kompas.GetParamStruct((short)StructType2DEnum.ko_TextItemParam);
+                    item.Init();
+                    item.s = "УУУУУУУХ";
+
+                    ksTextItemFont itemFont = (ksTextItemFont)kompas.GetParamStruct((short)StructType2DEnum.ko_TextItemFont);
+                    itemFont.Init();
+                    itemFont.fontName = "GOST type A";
 
 
-                    LayoutSheets _ls = doc.LayoutSheets;
-                    LayoutSheet LS = _ls.ItemByNumber[1];
-                    IStamp isamp = LS.Stamp;
-                    IText qq = isamp.Text[111];
-                    IText ww = isamp.Text[121];
-                    Console.WriteLine("ШТАМП Проверил -------------  " + qq.Str);
-                    Console.WriteLine("ШТАМП Роспись -------------  " + ww.Str);
+                    Console.WriteLine("Получение данных из документа № - " + Convert.ToInt32(i + 1));
+
+
+                    stamp.ksCloseStamp();
+
+
 
                     
 
 
-                    doc.Close(0); //Закрыть документ
+                    //doc.Close(0); //Закрыть документ
 
                 }
                 else
