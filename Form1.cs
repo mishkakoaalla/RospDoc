@@ -24,6 +24,25 @@ namespace RospDoc
     {
         List<string> path = new List<string>();
         List<string> path_name = new List<string>();
+        public bool clear = false;
+
+
+        public string r_bul = @"ToyusanuH";
+        public string r_danil = @"DanuILob";
+        public string r_krug = @"Kpyr/\ob";        
+        public string r_neum = @"Heym";
+        public string r_petrov = @"TIeTpob";
+        public string r_rud = @"Pygakob";
+        public string r_sorok = @"Copokuu";
+        public string r_ufr = @"Yqrpymob";
+        public string r_shal = @"lllarqrun";
+        
+
+
+
+
+
+
 
 
 
@@ -33,6 +52,7 @@ namespace RospDoc
         {
             InitializeComponent();
             GetKompas();
+            dateTimePicker1.Value = DateTime.Now;
         }
 
         private void panel1_DragDrop(object sender, DragEventArgs e)
@@ -137,85 +157,47 @@ namespace RospDoc
                 if (w == ".cdw")
                 {
 
-                    IKompasDocument doc = appl.Documents.Open(path[i], true, false);// Получаем интерфейс активного документа 2D в API7
-
-                    ksDocument2D docD = (ksDocument2D)kompas.ActiveDocument2D();
-                    ksStamp stamp = (ksStamp)docD.GetStamp();
-
-                    
-
-
-                    stamp.ksOpenStamp();
-                    stamp.ksColumnNumber(110);
-                    ksTextItemParam itemParam = (ksTextItemParam)kompas.GetParamStruct((short)StructType2DEnum.ko_TextItemParam);
-                    if (itemParam != null)
+                    if (clear == false)
                     {
-                        itemParam.Init();
+                        Console.WriteLine("START------------");
 
-                        ksTextItemFont itemFont = (ksTextItemFont)itemParam.GetItemFont();
-                        if (itemFont != null)
+                        if (comboBox2.SelectedItem.ToString() == "Проверил")
                         {
-                            itemFont.SetBitVectorValue(ldefin2d.NEW_LINE, true);
-                            itemParam.s = "1111111";
-                            docD.ksTextLine(itemParam);
+                            Doc2D(121, 131, textBox2.Text, dateTimePicker1.Text.ToString(), i, true);
+                            
                         }
+
+                       if (comboBox2.SelectedItem.ToString() == "Разработал")
+                        {
+                            Doc2D(120, 130, textBox2.Text, dateTimePicker1.Text.ToString(), i, false);
+                        }
+
+
+
+
                     }
+                    else
+                    {
+                        if (comboBox2.SelectedItem.ToString() == "Проверил")
+                        {
+                            Doc2D(121, 131, "","", i, false);
+                            Doc2D(123, 133, "","", i, false);
 
-                    stamp.ksCloseStamp();
+                        }
 
+                        if (comboBox2.SelectedItem.ToString() == "Разработал")
+                        {
+                            Doc2D(120, 130, "","", i, false);
+                        }
 
-
-                    //doc.Close(0); //Закрыть документ
+                    }
 
                 }
                 else
                 {
                     if (w == ".spw")
                     {
-
-
-                        IKompasDocument doc = appl.Documents.Open(path[i], true, false);// Получаем интерфейс активного документа 2D в API7
-
-                        
-                        ksSpcDocument DocS = (ksSpcDocument)kompas.SpcActiveDocument();
-
-
-
-                        ksStamp stamp = DocS.GetStamp();
-
-                        
-                                                                                                                                
-                        
-                                               
-
-                        //ksSpcDocument docS = (ksSpcDocument)kompas.SpcActiveDocument();
-                        //ksStamp stamp = (ksStamp)SS.GetStamp();
-
-
-
-
-                        stamp.ksOpenStamp();
-                        stamp.ksColumnNumber(120);
-                        ksTextItemParam itemParam = (ksTextItemParam)kompas.GetParamStruct((short)StructType2DEnum.ko_TextItemParam);
-                        if (itemParam != null)
-                        {
-                            itemParam.Init();
-
-                            ksTextItemFont itemFont = (ksTextItemFont)itemParam.GetItemFont();
-                            if (itemFont != null)
-                            {
-                                itemFont.SetBitVectorValue(ldefin2d.NEW_LINE, true);
-                                itemFont.fontName = "Staccato222 BT";
-
-                                itemParam.s = "44444";
-                                stamp.ksTextLine(itemParam);
-                                
-                            }
-                        }
-
-                        stamp.ksCloseStamp();
-
-
+                        SpsDoc(101,"", "", i);
                     }
 
                     
@@ -227,5 +209,227 @@ namespace RospDoc
 
 
         }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string vibor = comboBox1.SelectedItem.ToString();
+
+            switch (vibor)
+            {
+                case "Булганин":
+                    textBox2.Text = r_bul;
+                    
+                    break;
+                case "Данилов":
+                    textBox2.Text = r_danil;
+
+                    break;
+
+                case "Круглов":
+                    textBox2.Text = r_krug;
+
+                    break;
+
+                case "Неумоин":
+                    textBox2.Text = r_neum;
+
+                    break;
+
+                case "Петров":
+                    textBox2.Text = r_petrov;
+
+                    break;
+
+                case "Рудаков":
+                    textBox2.Text = r_rud;
+
+                    break;
+
+                case "Сорокин":
+                    textBox2.Text = r_sorok;
+
+                    break;
+
+                case "Уфрутов":
+                    textBox2.Text = r_ufr;
+
+                    break;
+
+
+                case "Шалягин":
+                    textBox2.Text = r_shal;
+
+                    break;
+
+
+                    //default:
+                    //Console.WriteLine("Default case");
+                    //break;
+            }
+
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox checkBox = (CheckBox)sender; // приводим отправителя к элементу типа CheckBox
+            if (checkBox.Checked == true)
+            {                
+                button1.Text = "Очистить роспись";
+                comboBox1.Enabled = false;
+                textBox2.Enabled = false;
+                dateTimePicker1.Enabled = false;
+                clear = true;
+    }
+            else
+            {
+                button1.Text = "Вставить роспись";
+                comboBox1.Enabled = true;
+                textBox2.Enabled = true;
+                dateTimePicker1.Enabled = true;
+                clear = false;
+    }
+        }
+
+
+        public void Doc2D(int n_str, int n_str_dat ,string text, string dat, int n_doc, bool ruk = false)
+        {
+            IKompasDocument doc = appl.Documents.Open(path[n_doc], true, false);// Получаем интерфейс активного документа 2D в API7
+            ksDocument2D docD = (ksDocument2D)kompas.ActiveDocument2D();
+            ksStamp stamp = (ksStamp)docD.GetStamp();
+
+            Console.WriteLine("функция Doc2D ");
+
+
+            stamp.ksOpenStamp();
+
+            //_____________________________________________________________
+            LayoutSheets _ls = doc.LayoutSheets;
+            LayoutSheet LS = _ls.ItemByNumber[1];
+            IStamp isamp = LS.Stamp;
+            IText qq = isamp.Text[10];
+            Console.WriteLine("Есть ли руководитель -------------  " + qq.Str);
+            //_____________________________________________________________
+
+
+
+            stamp.ksColumnNumber(n_str);
+            ksTextItemParam itemParam = (ksTextItemParam)kompas.GetParamStruct((short)StructType2DEnum.ko_TextItemParam);
+            if (itemParam != null)
+            {
+                itemParam.Init();
+
+                ksTextItemFont itemFont = (ksTextItemFont)itemParam.GetItemFont();
+                if (itemFont != null)
+                {
+                    itemFont.SetBitVectorValue(ldefin2d.NEW_LINE, true);
+                    itemParam.s = text;
+                    docD.ksTextLine(itemParam);
+                }
+            }
+
+            stamp.ksColumnNumber(n_str_dat);
+            
+            if (itemParam != null)
+            {
+                itemParam.Init();
+
+                ksTextItemFont itemFont = (ksTextItemFont)itemParam.GetItemFont();
+                if (itemFont != null)
+                {
+                    itemFont.SetBitVectorValue(ldefin2d.NEW_LINE, true);
+                    itemParam.s = dat;
+                    docD.ksTextLine(itemParam);
+                }
+            }
+
+
+            if (ruk== true)
+            {
+                stamp.ksColumnNumber(123);
+               
+                if (itemParam != null)
+                {
+                    itemParam.Init();
+
+                    ksTextItemFont itemFont = (ksTextItemFont)itemParam.GetItemFont();
+                    if (itemFont != null)
+                    {
+                        itemFont.SetBitVectorValue(ldefin2d.NEW_LINE, true);
+                        itemParam.s = textBox2.Text;
+                        docD.ksTextLine(itemParam);
+                    }
+                }
+
+
+                stamp.ksColumnNumber(133);
+
+                if (itemParam != null)
+                {
+                    itemParam.Init();
+
+                    ksTextItemFont itemFont = (ksTextItemFont)itemParam.GetItemFont();
+                    if (itemFont != null)
+                    {
+                        itemFont.SetBitVectorValue(ldefin2d.NEW_LINE, true);
+                        itemParam.s = dat;
+                        docD.ksTextLine(itemParam);
+                    }
+                }
+
+
+            }
+
+            stamp.ksCloseStamp();
+
+
+
+            //doc.Close(0); //Закрыть документ
+        }
+
+        public void SpsDoc(int n_str, string text, string dat, int n_doc)
+        {
+            IKompasDocument doc = appl.Documents.Open(path[n_doc], true, false);// Получаем интерфейс активного документа 2D в API7                        
+            ksSpcDocument DocS = (ksSpcDocument)kompas.SpcActiveDocument();
+            ksStamp stamp = DocS.GetStamp();
+
+
+
+
+            stamp.ksOpenStamp();
+
+            //_______________________________________
+            LayoutSheets _ls = doc.LayoutSheets;
+            LayoutSheet LS = _ls.ItemByNumber[1];
+            var q = _ls.ItemByNumber[1].Stamp;
+            IStamp isamp = LS.Stamp;
+            IText qq = isamp.Text[10];
+            Console.WriteLine("Есть ли руковод -------------  " + qq.Str);
+            //________________________________________
+
+
+            stamp.ksColumnNumber(120);
+            ksTextItemParam itemParam = (ksTextItemParam)kompas.GetParamStruct((short)StructType2DEnum.ko_TextItemParam);
+            if (itemParam != null)
+            {
+                itemParam.Init();
+
+                ksTextItemFont itemFont = (ksTextItemFont)itemParam.GetItemFont();
+                if (itemFont != null)
+                {
+                    itemFont.SetBitVectorValue(ldefin2d.NEW_LINE, true);
+                    itemFont.fontName = "Staccato222 BT";
+
+                    itemParam.s = "44444";
+                    stamp.ksTextLine(itemParam);
+
+                }
+            }
+
+            stamp.ksCloseStamp();
+
+        }
+
+
+
     }
 }
