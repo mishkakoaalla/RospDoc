@@ -302,6 +302,7 @@ namespace RospDoc
 
             stamp.ksOpenStamp();
 
+
             //_____________________________________________________________
             LayoutSheets _ls = doc.LayoutSheets;
             LayoutSheet LS = _ls.ItemByNumber[1];
