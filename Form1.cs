@@ -172,22 +172,21 @@ namespace RospDoc
                 {
                     if (w == ".spw")
                     {
+
+
                         IKompasDocument doc = appl.Documents.Open(path[i], true, false);// Получаем интерфейс активного документа 2D в API7
 
-                        ksDocument2D docD = (ksDocument2D)kompas.ActiveDocument2D();
-
-
-                        object stamp = null;
-                        ksSpcDocument spcDoc = null;
-                        spcDoc = (ksSpcDocument)docD;
-
-                        stamp = spcDoc.GetStamp();
                         
+                        ksSpcDocument DocS = (ksSpcDocument)kompas.SpcActiveDocument();
 
 
-                        ksDocument2D docS = (ksDocument2D)kompas.SpcActiveDocument();
-                        ksSpecification SS = (ksSpecification)kompas.SpcDocument();
 
+                        ksStamp stamp = DocS.GetStamp();
+
+                        
+                                                                                                                                
+                        
+                                               
 
                         //ksSpcDocument docS = (ksSpcDocument)kompas.SpcActiveDocument();
                         //ksStamp stamp = (ksStamp)SS.GetStamp();
@@ -196,7 +195,7 @@ namespace RospDoc
 
 
                         stamp.ksOpenStamp();
-                        stamp.ksColumnNumber(110);
+                        stamp.ksColumnNumber(120);
                         ksTextItemParam itemParam = (ksTextItemParam)kompas.GetParamStruct((short)StructType2DEnum.ko_TextItemParam);
                         if (itemParam != null)
                         {
@@ -206,8 +205,10 @@ namespace RospDoc
                             if (itemFont != null)
                             {
                                 itemFont.SetBitVectorValue(ldefin2d.NEW_LINE, true);
-                                itemParam.s = "1111111";
-                                docD.ksTextLine(itemParam);
+                                itemFont.fontName = "Staccato222 BT";
+
+                                itemParam.s = "44444";
+                                stamp.ksTextLine(itemParam);
                                 
                             }
                         }
