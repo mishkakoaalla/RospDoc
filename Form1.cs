@@ -25,6 +25,7 @@ namespace RospDoc
         List<string> path = new List<string>();
         List<string> path_name = new List<string>();
         public bool clear = false;
+        
 
 
         public string r_bul = @"ToyusanuH";
@@ -180,14 +181,14 @@ namespace RospDoc
                     {
                         if (comboBox2.SelectedItem.ToString() == "Проверил")
                         {
-                            Doc2D(121, 131, "","", i, false);
-                            Doc2D(123, 133, "","", i, false);
+                            Doc2D(121, 131, " "," ", i, false);
+                            Doc2D(123, 133, " "," ", i, false);
 
                         }
 
                         if (comboBox2.SelectedItem.ToString() == "Разработал")
                         {
-                            Doc2D(120, 130, "","", i, false);
+                            Doc2D(120, 130, " "," ", i, false);
                         }
 
                     }
@@ -196,11 +197,43 @@ namespace RospDoc
                 else
                 {
                     if (w == ".spw")
-                    {
-                        SpsDoc(101,"", "", i);
-                    }
 
-                    
+                        if (clear == false)
+                        {
+                            Console.WriteLine("START------------");
+
+                            if (comboBox2.SelectedItem.ToString() == "Проверил")
+                            {
+                                SpsDoc(121, 131, textBox2.Text, dateTimePicker1.Text.ToString(), i, true);
+
+                            }
+
+                            if (comboBox2.SelectedItem.ToString() == "Разработал")
+                            {
+                                SpsDoc(120, 130, textBox2.Text, dateTimePicker1.Text.ToString(), i, false);
+                            }
+
+
+
+
+                        }
+                        else
+                        {
+                            if (comboBox2.SelectedItem.ToString() == "Проверил")
+                            {
+                                SpsDoc(121, 131, " ", " ", i, false);
+                                SpsDoc(123, 133, " ", " ", i, false);
+
+                            }
+
+                            if (comboBox2.SelectedItem.ToString() == "Разработал")
+                            {
+                                SpsDoc(120, 130, " ", " ", i, false);
+                            }
+
+                        }
+
+
                 }
             }
 
@@ -279,7 +312,7 @@ namespace RospDoc
                 textBox2.Enabled = false;
                 dateTimePicker1.Enabled = false;
                 clear = true;
-    }
+            }
             else
             {
                 button1.Text = "Вставить роспись";
@@ -287,7 +320,7 @@ namespace RospDoc
                 textBox2.Enabled = true;
                 dateTimePicker1.Enabled = true;
                 clear = false;
-    }
+            }
         }
 
 
@@ -302,19 +335,23 @@ namespace RospDoc
 
             stamp.ksOpenStamp();
 
-
             //_____________________________________________________________
             LayoutSheets _ls = doc.LayoutSheets;
             LayoutSheet LS = _ls.ItemByNumber[1];
             IStamp isamp = LS.Stamp;
             IText qq = isamp.Text[10];
+            string str_ruk = qq.Str;
+            LS.LayoutLibraryFileName = "C:\\Program Files\\ASCON\\KOMPAS-3D v20\\Sys\\graphic.lyt";
+            LS.Update();
+
             Console.WriteLine("Есть ли руководитель -------------  " + qq.Str);
             //_____________________________________________________________
 
 
-
             stamp.ksColumnNumber(n_str);
             ksTextItemParam itemParam = (ksTextItemParam)kompas.GetParamStruct((short)StructType2DEnum.ko_TextItemParam);
+
+            //роспись
             if (itemParam != null)
             {
                 itemParam.Init();
@@ -328,6 +365,7 @@ namespace RospDoc
                 }
             }
 
+            //Дата
             stamp.ksColumnNumber(n_str_dat);
             
             if (itemParam != null)
@@ -342,52 +380,48 @@ namespace RospDoc
                     docD.ksTextLine(itemParam);
                 }
             }
-
-
+            ///рук проекта
             if (ruk== true)
             {
-                stamp.ksColumnNumber(123);
-               
-                if (itemParam != null)
+                if (str_ruk != "")
                 {
+                    //роспись
+                    stamp.ksColumnNumber(123);
                     itemParam.Init();
-
                     ksTextItemFont itemFont = (ksTextItemFont)itemParam.GetItemFont();
                     if (itemFont != null)
                     {
                         itemFont.SetBitVectorValue(ldefin2d.NEW_LINE, true);
-                        itemParam.s = textBox2.Text;
+                        itemParam.s = text;
                         docD.ksTextLine(itemParam);
                     }
-                }
 
 
-                stamp.ksColumnNumber(133);
-
-                if (itemParam != null)
-                {
+                    //дата в росписи
+                    stamp.ksColumnNumber(133);
                     itemParam.Init();
-
-                    ksTextItemFont itemFont = (ksTextItemFont)itemParam.GetItemFont();
+                    
                     if (itemFont != null)
                     {
                         itemFont.SetBitVectorValue(ldefin2d.NEW_LINE, true);
                         itemParam.s = dat;
                         docD.ksTextLine(itemParam);
                     }
+
                 }
-
-
             }
+
+
+            
 
             stamp.ksCloseStamp();
 
 
 
-            //doc.Close(0); //Закрыть документ
+            doc.Close(DocumentCloseOptions.kdSaveChanges);
         }
 
-        public void SpsDoc(int n_str, string text, string dat, int n_doc)
+        public void SpsDoc(int n_str, int n_str_dat, string text, string dat, int n_doc, bool ruk = false)
         {
             IKompasDocument doc = appl.Documents.Open(path[n_doc], true, false);// Получаем интерфейс активного документа 2D в API7                        
             ksSpcDocument DocS = (ksSpcDocument)kompas.SpcActiveDocument();
@@ -404,12 +438,16 @@ namespace RospDoc
             var q = _ls.ItemByNumber[1].Stamp;
             IStamp isamp = LS.Stamp;
             IText qq = isamp.Text[10];
-            Console.WriteLine("Есть ли руковод -------------  " + qq.Str);
+            LS.LayoutLibraryFileName = "C:\\Program Files\\ASCON\\KOMPAS-3D v20\\Sys\\graphic.lyt";
+            LS.Update();
+            string str_ruk = qq.Str;
+            Console.WriteLine("Есть ли руководитель -------------  " + qq.Str);
             //________________________________________
 
-
-            stamp.ksColumnNumber(120);
+            stamp.ksColumnNumber(n_str);
             ksTextItemParam itemParam = (ksTextItemParam)kompas.GetParamStruct((short)StructType2DEnum.ko_TextItemParam);
+
+            //роспись
             if (itemParam != null)
             {
                 itemParam.Init();
@@ -418,18 +456,106 @@ namespace RospDoc
                 if (itemFont != null)
                 {
                     itemFont.SetBitVectorValue(ldefin2d.NEW_LINE, true);
-                    itemFont.fontName = "Staccato222 BT";
-
-                    itemParam.s = "44444";
+                    itemParam.s = text;
                     stamp.ksTextLine(itemParam);
+                }
+            }
+
+            //Дата
+            stamp.ksColumnNumber(n_str_dat);
+
+            if (itemParam != null)
+            {
+                itemParam.Init();
+
+                ksTextItemFont itemFont = (ksTextItemFont)itemParam.GetItemFont();
+                if (itemFont != null)
+                {
+                    itemFont.SetBitVectorValue(ldefin2d.NEW_LINE, true);
+                    itemParam.s = dat;
+                    stamp.ksTextLine(itemParam);
+                }
+            }
+            ///рук проекта
+            if (ruk == true)
+            {
+                if (str_ruk != "")
+                {
+                    //роспись
+                    stamp.ksColumnNumber(123);
+                    itemParam.Init();
+                    ksTextItemFont itemFont = (ksTextItemFont)itemParam.GetItemFont();
+                    if (itemFont != null)
+                    {
+                        itemFont.SetBitVectorValue(ldefin2d.NEW_LINE, true);
+                        itemParam.s = text;
+                        stamp.ksTextLine(itemParam);
+                    }
+
+
+                    //дата в росписи
+                    stamp.ksColumnNumber(133);
+                    itemParam.Init();
+
+                    if (itemFont != null)
+                    {
+                        itemFont.SetBitVectorValue(ldefin2d.NEW_LINE, true);
+                        itemParam.s = dat;
+                        stamp.ksTextLine(itemParam);
+                    }
 
                 }
             }
 
+
+
+
             stamp.ksCloseStamp();
 
-        }
+            doc.Close(DocumentCloseOptions.kdSaveChanges); //Закрыть документ
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //stamp.ksColumnNumber(120);
+            //ksTextItemParam itemParam = (ksTextItemParam)kompas.GetParamStruct((short)StructType2DEnum.ko_TextItemParam);
+            //if (itemParam != null)
+            //{
+            //    itemParam.Init();
+
+            //    ksTextItemFont itemFont = (ksTextItemFont)itemParam.GetItemFont();
+            //    if (itemFont != null)
+            //    {
+            //        itemFont.SetBitVectorValue(ldefin2d.NEW_LINE, true);
+            //        itemFont.fontName = "Staccato222 BT";
+
+            //        itemParam.s = "44444";
+            //        stamp.ksTextLine(itemParam);
+
+            //    }
+            //}
+
+            //stamp.ksCloseStamp();
+
+        }
 
 
     }

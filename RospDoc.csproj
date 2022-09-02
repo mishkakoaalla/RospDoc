@@ -1,17 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="packages\Costura.Fody.4.1.0\build\Costura.Fody.props" Condition="Exists('packages\Costura.Fody.4.1.0\build\Costura.Fody.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{5B89784C-C958-4944-BCCF-4ED63E6E44E0}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>RospDoc</RootNamespace>
     <AssemblyName>RospDoc</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -36,35 +39,47 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="KAPITypes">
-      <HintPath>..\..\..\..\..\..\..\Program Files\ASCON\KOMPAS-3D v18\SDK\Samples\Common\KAPITypes.dll</HintPath>
+    <Reference Include="CONVERTLIBINTERFACES">
+      <HintPath>..\..\_DLL_Kompass\CONVERTLIBINTERFACES.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Costura, Version=4.1.0.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
+      <HintPath>packages\Costura.Fody.4.1.0\lib\net40\Costura.dll</HintPath>
+    </Reference>
+    <Reference Include="KAPITypes, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\_DLL_Kompass\KAPITypes.dll</HintPath>
     </Reference>
     <Reference Include="KGAXLib">
-      <HintPath>..\..\..\..\..\..\..\Program Files\ASCON\KOMPAS-3D v18\SDK\Samples\Common\KGAXLib.dll</HintPath>
+      <HintPath>..\..\_DLL_Kompass\KGAXLib.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Kompas6API2D5COM">
-      <HintPath>..\..\..\..\..\..\..\Program Files\ASCON\KOMPAS-3D v18\SDK\Samples\Common\Kompas6API2D5COM.dll</HintPath>
+      <HintPath>..\..\_DLL_Kompass\Kompas6API2D5COM.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Kompas6API3D5COM">
-      <HintPath>..\..\..\..\..\..\..\Program Files\ASCON\KOMPAS-3D v18\SDK\Samples\Common\Kompas6API3D5COM.dll</HintPath>
+      <HintPath>..\..\_DLL_Kompass\Kompas6API3D5COM.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Kompas6API5">
-      <HintPath>..\..\..\..\..\..\..\Program Files\ASCON\KOMPAS-3D v18\SDK\Samples\Common\Kompas6API5.dll</HintPath>
+      <HintPath>..\..\_DLL_Kompass\Kompas6API5.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Kompas6Constants">
-      <HintPath>..\..\..\..\..\..\..\Program Files\ASCON\KOMPAS-3D v18\SDK\Samples\Common\Kompas6Constants.dll</HintPath>
+      <HintPath>..\..\_DLL_Kompass\Kompas6Constants.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Kompas6Constants3D">
-      <HintPath>..\..\..\..\..\..\..\Program Files\ASCON\KOMPAS-3D v18\SDK\Samples\Common\Kompas6Constants3D.dll</HintPath>
+      <HintPath>..\..\_DLL_Kompass\Kompas6Constants3D.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="KompasAPI7">
-      <HintPath>..\..\..\..\..\..\..\Program Files\ASCON\KOMPAS-3D v18\SDK\Samples\Common\KompasAPI7.dll</HintPath>
+      <HintPath>..\..\_DLL_Kompass\KompasAPI7.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="KompasLibrary">
+      <HintPath>..\..\_DLL_Kompass\KompasLibrary.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
@@ -79,7 +94,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="VCHATCHLib">
-      <HintPath>..\..\..\..\..\..\..\Program Files\ASCON\KOMPAS-3D v18\SDK\Samples\Common\VCHATCHLib.dll</HintPath>
+      <HintPath>..\..\_DLL_Kompass\VCHATCHLib.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
   </ItemGroup>
@@ -104,6 +119,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -138,4 +154,12 @@
     </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="packages\Fody.6.0.0\build\Fody.targets" Condition="Exists('packages\Fody.6.0.0\build\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\Fody.6.0.0\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Fody.6.0.0\build\Fody.targets'))" />
+    <Error Condition="!Exists('packages\Costura.Fody.4.1.0\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Costura.Fody.4.1.0\build\Costura.Fody.props'))" />
+  </Target>
 </Project>
